@@ -115,31 +115,4 @@ export const uploadPDF = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
-export const summarizeVideoPost = async (req: Request, res: Response) => {
-  try {
-    const genAI = new GoogleGenerativeAI("AIzaSyCBPGeSSOs4OKF0fR24YNoZdM6SpA4aTFs");
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-    const result = await model.generateContent([
-      {
-        inlineData: {
-          data: Buffer.from(fs.readFileSync("./transcription/transcript.txt")).toString("base64"), // ✅ Path fixed
-          mimeType: "text/plain",
-        },
-      },
-      'This is a YouTube transcript. If the text is not in English, first translate it into English. Then summarize the content in 500 words.',
-    ]);
-
-    const summary = result.response?.candidates?.[0]?.content?.parts?.[0]?.text;
-
-    if (!summary) {
-      res.status(500).json({ message: "Failed to generate summary from Gemini API" });
-      return
-    }
-
-    res.status(200).json({ summary });
-  } catch (error: any) {
-    console.error("Summarization Error:", error.message);
-    res.status(500).json({ message: "Internal Server Error" });
-  }
-};
