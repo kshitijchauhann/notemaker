@@ -13,7 +13,8 @@ import {
   DialogContentText,
   DialogTitle,
   TextField,
-  Switch
+  Switch,
+  Paper
 } from "@mui/material";
 import LockIcon from "@mui/icons-material/Lock";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
@@ -21,7 +22,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import GoogleIcon from "@mui/icons-material/Google";
 
 const Profile = () => {
-  const [activeTab, setActiveTab] = useState("profile"); // Single state for tabs
+  const [activeTab, setActiveTab] = useState("profile");
   const [openEdit, setOpenEdit] = useState(false);
   const [openPasswordDialog, setOpenPasswordDialog] = useState(false);
   const [profileData, setProfileData] = useState({
@@ -35,79 +36,148 @@ const Profile = () => {
   };
 
   return (
-    <Box sx={{ display: "flex", height: "100vh", width: "100vw", overflow: "hidden" }}>
+    <Box
+      sx={{
+        display: "flex",
+        height: "100vh",
+        width: "100vw",
+        gap: 2,
+        p: 2,
+        bgcolor: "background.default"
+      }}
+    >
       {/* Sidebar */}
-      <Box sx={{ width: "30%", bgcolor: "grey.300", p: 2 }}>
-        <Stack spacing={2} direction="column">
-          <Typography variant="h4">Account</Typography>
-          <Typography>Manage your account info.</Typography>
+      <Paper
+        elevation={3}
+        sx={{
+          width: { xs: "100%", md: "30%" },
+          p: 3,
+          borderRadius: 2,
+          bgcolor: "grey.100"
+        }}
+      >
+        <Stack spacing={3}>
+          <Typography variant="h4" sx={{ fontWeight: "bold" }}>
+            Account
+          </Typography>
+          <Typography variant="body1" color="text.secondary">
+            Manage your account info.
+          </Typography>
 
           {/* Tabs with onClick handler */}
           <Button
-            variant={activeTab === "profile" ? "contained" : "text"}
+            variant={activeTab === "profile" ? "contained" : "outlined"}
             fullWidth
             startIcon={<AccountBoxIcon />}
-            sx={{ justifyContent: "flex-start", textAlign: "left", pl: 2 }}
+            sx={{
+              justifyContent: "flex-start",
+              textAlign: "left",
+              pl: 2,
+              borderRadius: 2,
+              "&:hover": { boxShadow: 3 }
+            }}
             onClick={() => setActiveTab("profile")}
           >
-            <Typography>Profile</Typography>
+            Profile
           </Button>
 
           <Button
-            variant={activeTab === "security" ? "contained" : "text"}
+            variant={activeTab === "security" ? "contained" : "outlined"}
             fullWidth
             startIcon={<LockIcon />}
-            sx={{ justifyContent: "flex-start", textAlign: "left", pl: 2 }}
+            sx={{
+              justifyContent: "flex-start",
+              textAlign: "left",
+              pl: 2,
+              borderRadius: 2,
+              "&:hover": { boxShadow: 3 }
+            }}
             onClick={() => setActiveTab("security")}
           >
-            <Typography>Security</Typography>
+            Security
           </Button>
         </Stack>
-      </Box>
+      </Paper>
 
       {/* Content Area */}
-      <Box sx={{ width: "70%", bgcolor: "grey.100", p: 3 }}>
+      <Paper
+        elevation={3}
+        sx={{
+          flex: 1,
+          p: 4,
+          borderRadius: 2,
+          bgcolor: "background.paper",
+          overflowY: "auto"
+        }}
+      >
         {activeTab === "profile" && (
           <>
-            <Typography variant="h3" sx={{ textAlign: "left", p: 2 }}>
+            <Typography variant="h3" sx={{ mb: 2 }}>
               Profile Details
             </Typography>
-            <Divider />
-            <Grid container spacing={2} alignItems="center">
-              <Grid item xs={3}>
-                <Typography>Profile</Typography>
+            <Divider sx={{ mb: 3 }} />
+            <Grid container spacing={3} alignItems="center">
+              <Grid item xs={12} md={3}>
+                <Typography variant="subtitle1" color="text.secondary">
+                  Profile Picture
+                </Typography>
               </Grid>
-              <Grid item xs={7}>
-                <Stack direction="row" alignItems="center">
-                  <Avatar alt="Profile Picture" src="" sx={{ width: 50, height: 50, cursor: "pointer" }} />
-                  <Typography sx={{ pl: 1 }}>{profileData.name}</Typography>
+              <Grid item xs={12} md={7}>
+                <Stack direction="row" alignItems="center" spacing={2}>
+                  <Avatar
+                    alt="Profile Picture"
+                    src=""
+                    sx={{
+                      width: 70,
+                      height: 70,
+                      cursor: "pointer",
+                      transition: "transform 0.3s",
+                      "&:hover": { transform: "scale(1.1)" }
+                    }}
+                  />
+                  <Typography variant="h6">{profileData.name}</Typography>
                 </Stack>
               </Grid>
-              <Grid item xs={2}>
-                <Button startIcon={<EditIcon />} onClick={() => setOpenEdit(true)}>
-                  Edit Profile
+              <Grid item xs={12} md={2}>
+                <Button
+                  startIcon={<EditIcon />}
+                  variant="outlined"
+                  onClick={() => setOpenEdit(true)}
+                  sx={{
+                    textTransform: "none",
+                    borderRadius: 2,
+                    "&:hover": { boxShadow: 2 }
+                  }}
+                >
+                  Edit
                 </Button>
               </Grid>
             </Grid>
-            <Divider />
-            <Grid container spacing={2} alignItems="center">
-              <Grid item xs={3}>
-                <Typography>Email Address</Typography>
+            <Divider sx={{ my: 3 }} />
+
+            <Grid container spacing={3} alignItems="center">
+              <Grid item xs={12} md={3}>
+                <Typography variant="subtitle1" color="text.secondary">
+                  Email Address
+                </Typography>
               </Grid>
-              <Grid item xs={9}>
-                <Typography>{profileData.email}</Typography>
+              <Grid item xs={12} md={9}>
+                <Typography variant="body1">{profileData.email}</Typography>
               </Grid>
             </Grid>
-            <Divider />
-            <Grid container spacing={2} alignItems="center">
-              <Grid item xs={3}>
-                <Typography>Connected Account</Typography>
-              </Grid>
-              <Grid item xs={9}>
-                <Typography sx={{ display: "flex", alignItems: "center" }}>
-                  <GoogleIcon sx={{ pr: 1 }} />
-                  {profileData.email}
+            <Divider sx={{ my: 3 }} />
+
+            <Grid container spacing={3} alignItems="center">
+              <Grid item xs={12} md={3}>
+                <Typography variant="subtitle1" color="text.secondary">
+                  Connected Account
                 </Typography>
+              </Grid>
+              <Grid item xs={12} md={9}>
+                <Stack direction="row" alignItems="center" spacing={1}>
+                  <GoogleIcon color="primary" />
+                  <Typography variant="body1">{profileData.email}</Typography>
+                </Stack>
               </Grid>
             </Grid>
           </>
@@ -115,38 +185,52 @@ const Profile = () => {
 
         {activeTab === "security" && (
           <>
-            <Typography variant="h3" sx={{ textAlign: "left", p: 2 }}>
+            <Typography variant="h3" sx={{ mb: 2 }}>
               Security Settings
             </Typography>
-            <Divider />
-            <Grid container spacing={2} alignItems="center">
-              <Grid item xs={3}>
-                <Typography>Change Password</Typography>
+            <Divider sx={{ mb: 3 }} />
+            <Grid container spacing={3} alignItems="center">
+              <Grid item xs={12} md={3}>
+                <Typography variant="subtitle1" color="text.secondary">
+                  Change Password
+                </Typography>
               </Grid>
-              <Grid item xs={9}>
-                <Button variant="contained" color="primary" onClick={() => setOpenPasswordDialog(true)}>
+              <Grid item xs={12} md={9}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => setOpenPasswordDialog(true)}
+                  sx={{
+                    textTransform: "none",
+                    borderRadius: 2,
+                    "&:hover": { boxShadow: 2 }
+                  }}
+                >
                   Change Password
                 </Button>
               </Grid>
             </Grid>
-            <Divider />
-            <Grid container spacing={2} alignItems="center">
-              <Grid item xs={3}>
-                <Typography>Enable Two-Factor Authentication</Typography>
+            <Divider sx={{ my: 3 }} />
+
+            <Grid container spacing={3} alignItems="center">
+              <Grid item xs={12} md={3}>
+                <Typography variant="subtitle1" color="text.secondary">
+                  Two-Factor Authentication
+                </Typography>
               </Grid>
-              <Grid item xs={9}>
+              <Grid item xs={12} md={9}>
                 <Switch />
               </Grid>
             </Grid>
           </>
         )}
-      </Box>
+      </Paper>
 
       {/* Edit Profile Dialog */}
       <Dialog open={openEdit} onClose={() => setOpenEdit(false)}>
         <DialogTitle>Edit Profile</DialogTitle>
-        <DialogContent>
-          <DialogContentText>Change Name:</DialogContentText>
+        <DialogContent sx={{ py: 2 }}>
+          <DialogContentText>Change your name and email address below:</DialogContentText>
           <TextField
             autoFocus
             required
@@ -156,13 +240,11 @@ const Profile = () => {
             label="Name"
             type="text"
             fullWidth
-            variant="standard"
+            variant="outlined"
             value={profileData.name}
             onChange={handleInputChange}
+            sx={{ my: 1 }}
           />
-        </DialogContent>
-        <DialogContent>
-          <DialogContentText>Change Email:</DialogContentText>
           <TextField
             required
             margin="dense"
@@ -171,22 +253,27 @@ const Profile = () => {
             label="Email"
             type="email"
             fullWidth
-            variant="standard"
+            variant="outlined"
             value={profileData.email}
             onChange={handleInputChange}
+            sx={{ my: 1 }}
           />
         </DialogContent>
-        <DialogActions>
+        <DialogActions sx={{ pr: 3, pb: 2 }}>
           <Button onClick={() => setOpenEdit(false)}>Cancel</Button>
-          <Button onClick={() => setOpenEdit(false)}>Submit</Button>
+          <Button onClick={() => setOpenEdit(false)} variant="contained">
+            Submit
+          </Button>
         </DialogActions>
       </Dialog>
 
       {/* Change Password Dialog */}
       <Dialog open={openPasswordDialog} onClose={() => setOpenPasswordDialog(false)}>
         <DialogTitle>Change Password</DialogTitle>
-        <DialogContent>
-          <DialogContentText>Enter your new password below:</DialogContentText>
+        <DialogContent sx={{ py: 2 }}>
+          <DialogContentText>
+            Enter your current password and new password below:
+          </DialogContentText>
           <TextField
             required
             margin="dense"
@@ -195,7 +282,8 @@ const Profile = () => {
             label="Current Password"
             type="password"
             fullWidth
-            variant="standard"
+            variant="outlined"
+            sx={{ my: 1 }}
           />
           <TextField
             required
@@ -205,7 +293,8 @@ const Profile = () => {
             label="New Password"
             type="password"
             fullWidth
-            variant="standard"
+            variant="outlined"
+            sx={{ my: 1 }}
           />
           <TextField
             required
@@ -215,12 +304,15 @@ const Profile = () => {
             label="Confirm New Password"
             type="password"
             fullWidth
-            variant="standard"
+            variant="outlined"
+            sx={{ my: 1 }}
           />
         </DialogContent>
-        <DialogActions>
+        <DialogActions sx={{ pr: 3, pb: 2 }}>
           <Button onClick={() => setOpenPasswordDialog(false)}>Cancel</Button>
-          <Button onClick={() => setOpenPasswordDialog(false)}>Submit</Button>
+          <Button onClick={() => setOpenPasswordDialog(false)} variant="contained">
+            Submit
+          </Button>
         </DialogActions>
       </Dialog>
     </Box>

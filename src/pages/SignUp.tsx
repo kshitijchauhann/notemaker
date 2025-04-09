@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -10,6 +11,8 @@ import Alert from '@mui/material/Alert';
 import LinearProgress from '@mui/material/LinearProgress';
 
 const SignUp = () => {
+  const navigate = useNavigate();
+
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -17,21 +20,15 @@ const SignUp = () => {
   const [errors, setErrors] = useState({});
   const [passwordStrength, setPasswordStrength] = useState(0);
 
-  // Check password strength
   const checkPasswordStrength = (pass) => {
     let score = 0;
     if (!pass) return 0;
-    
-    // Length check
     if (pass.length >= 8) score += 20;
     if (pass.length >= 12) score += 10;
-    
-    // Complexity checks
-    if (/[A-Z]/.test(pass)) score += 20; // Uppercase
-    if (/[a-z]/.test(pass)) score += 10; // Lowercase
-    if (/[0-9]/.test(pass)) score += 20; // Numbers
-    if (/[^A-Za-z0-9]/.test(pass)) score += 20; // Special chars
-    
+    if (/[A-Z]/.test(pass)) score += 20;
+    if (/[a-z]/.test(pass)) score += 10;
+    if (/[0-9]/.test(pass)) score += 20;
+    if (/[^A-Za-z0-9]/.test(pass)) score += 20;
     return score;
   };
 
@@ -56,35 +53,66 @@ const SignUp = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    
     if (!name.trim()) newErrors.name = "Name is required";
     if (!password) newErrors.password = "Password is required";
     else if (password.length < 8) newErrors.password = "Password must be at least 8 characters";
-    
     if (!confirmPassword) newErrors.confirmPassword = "Please confirm your password";
     else if (password !== confirmPassword) newErrors.confirmPassword = "Passwords do not match";
-    
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = () => {
-    if (validateForm()) {
-      setSubmitted(true);
+  const handleSubmit = async () => {
+    if (!validateForm()) return;
+
+    // Simulated backend response
+    try {
+      // Replace this with your real backend call
+      const response = { status: 200 }; 
+
+      if (response.status === 200) {
+        setSubmitted(true);
+        setTimeout(() => {
+          navigate("/login");
+        }, 1500);
+      }
+    } catch (err) {
+      console.error("Signup error:", err);
     }
   };
 
   return (
-    <Box sx={{ maxWidth: 400, margin: '0 auto', mt: 4 }}>
-      <Card>
+    <Box
+      sx={{
+        height: '100vh',
+        width: '100vw',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 2,
+        overflow: 'hidden',
+        position: 'fixed',
+        top: 0,
+        left: 0
+      }}
+    >
+      <Box sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '80%',
+        padding: 2
+        }}>
+
+      <Card sx={{ maxWidth: 400, width: '100%' }}>
         <CardContent>
-          <Typography variant="h5" component="div" gutterBottom>
+          <Typography variant="h5" gutterBottom>
             Sign Up
           </Typography>
-          
+
           <Box sx={{ mb: 2 }}>
             <Typography>Name:</Typography>
-            <TextField 
+            <TextField
               fullWidth
               variant="outlined"
               value={name}
@@ -94,10 +122,10 @@ const SignUp = () => {
               margin="dense"
             />
           </Box>
-          
+
           <Box sx={{ mb: 2 }}>
             <Typography>Password:</Typography>
-            <TextField 
+            <TextField
               fullWidth
               type="password"
               variant="outlined"
@@ -110,9 +138,9 @@ const SignUp = () => {
             />
             {password && (
               <>
-                <LinearProgress 
-                  variant="determinate" 
-                  value={passwordStrength} 
+                <LinearProgress
+                  variant="determinate"
+                  value={passwordStrength}
                   color={getStrengthColor(passwordStrength)}
                   sx={{ mt: 1 }}
                 />
@@ -122,10 +150,10 @@ const SignUp = () => {
               </>
             )}
           </Box>
-          
+
           <Box sx={{ mb: 2 }}>
             <Typography>Confirm Password:</Typography>
-            <TextField 
+            <TextField
               fullWidth
               type="password"
               variant="outlined"
@@ -137,7 +165,7 @@ const SignUp = () => {
               autoComplete="new-password"
             />
           </Box>
-          
+
           {submitted && (
             <Alert severity="success" sx={{ mt: 2 }}>
               Sign-up successful! Redirecting...
@@ -145,7 +173,7 @@ const SignUp = () => {
           )}
         </CardContent>
         <CardActions sx={{ padding: 2 }}>
-          <Button 
+          <Button
             variant="contained"
             onClick={handleSubmit}
             fullWidth
@@ -155,6 +183,7 @@ const SignUp = () => {
           </Button>
         </CardActions>
       </Card>
+      </Box>
     </Box>
   );
 };

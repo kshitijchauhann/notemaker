@@ -24,13 +24,23 @@ import {
   Summarize as SummarizeIcon,
   Close as CloseIcon
 } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 
 const AINoteMakerLanding = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleDrawer = (open) => () => {
     setDrawerOpen(open);
   };
+
+  const handleLoginClick = () => {
+    navigate("/login")
+  }
+
+  const handleSignupClick = () => {
+    navigate("/signup");
+  }
 
   return (
     <Box sx={{ flexGrow: 1, minHeight: '100vh', width:'100vw' }}>
@@ -43,8 +53,21 @@ const AINoteMakerLanding = () => {
           </Typography>
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <Button color="inherit" href="#features">Features</Button>
-            <Button color="inherit">Pricing</Button>
-            <Button color="primary" variant="contained" sx={{ ml: 2, borderRadius: 28 }}>
+
+            <Button 
+              color="primary" 
+              variant="contained" 
+              sx={{ ml: 2, borderRadius: 28 }}
+              onClick={handleLoginClick}
+            >
+              Login
+            </Button>
+            <Button 
+              color="primary" 
+              variant="contained" 
+              sx={{ ml: 2, borderRadius: 28 }}
+              onClick={handleSignupClick}
+            >
               Sign Up Free
             </Button>
           </Box>
@@ -71,21 +94,30 @@ const AINoteMakerLanding = () => {
             </IconButton>
           </Box>
           <List>
-            <ListItem disablePadding>
-              <ListItemButton component="a" href="#features">
-                <ListItemText primary="Features" />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
-              <ListItemButton>
-                <ListItemText primary="Pricing" />
-              </ListItemButton>
-            </ListItem>
+                        <ListItem sx={{ pt: 2 }}>
+
+            <Button 
+              color="primary" 
+              variant="contained" 
+              fullWidth 
+              sx={{ borderRadius: 28 }}
+              onClick={handleLoginClick}
+            >
+              Login
+            </Button>
+              </ListItem>
             <ListItem sx={{ pt: 2 }}>
-              <Button color="primary" variant="contained" fullWidth sx={{ borderRadius: 28 }}>
+
+              <Button 
+                color="primary" 
+                variant="contained" 
+                fullWidth sx={{ borderRadius: 28 }}
+                onClick={handleSignupClick}
+              >
                 Sign Up Free
               </Button>
             </ListItem>
+            
           </List>
         </Box>
       </Drawer>
@@ -111,22 +143,16 @@ const AINoteMakerLanding = () => {
                   variant="contained" 
                   size="large" 
                   sx={{ borderRadius: 28, px: 3, py: 1, backgroundColor: '#6366F1' }}
+                  onClick={handleSignupClick}
                 >
                   Get Started
                 </Button>
-                <Button 
-                  variant="outlined" 
-                  size="large"
-                  sx={{ borderRadius: 28, px: 3, py: 1 }}
-                >
-                  Watch Demo
-                </Button>
-              </Box>
+                              </Box>
             </Grid>
             <Grid item xs={12} md={6}>
               <Box 
                 component="img"
-                src="/api/placeholder/600/400"
+                src="https://miro.medium.com/v2/resize:fit:1100/format:webp/0*E1-9a1V5YJlXbS35"
                 alt="NoteGenius App Interface"
                 sx={{
                   width: '100%',
@@ -213,6 +239,7 @@ const AINoteMakerLanding = () => {
               variant="contained" 
               size="large"
               sx={{ borderRadius: 28, px: 4, py: 1.5, backgroundColor: '#6366F1' }}
+              onClick={handleSignupClick}
             >
               Sign Up Free
             </Button>

@@ -34,8 +34,26 @@ const Login = () => {
   };
 
   return (
-    <Box sx={{ maxWidth: 400, margin: '0 auto', mt: 4 }}>
-      <Card>
+    <Box sx={{
+      height: '100vh',
+      width: '100vw',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: 2,
+      overflow: 'hidden',
+      position: 'fixed',
+      top: 0,
+      left: 0
+    }}>
+    <Box sx={{ 
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '80%',
+        padding: 2
+        }}>
+      <Card sx={{  maxWidth: 400, width: '100%' }}>
         <CardContent>
           <Typography variant="h5" component="div" gutterBottom>
             Log In
@@ -89,6 +107,7 @@ const Login = () => {
           </Button>
         </CardActions>
       </Card>
+    </Box>
     </Box>
   );
 };
