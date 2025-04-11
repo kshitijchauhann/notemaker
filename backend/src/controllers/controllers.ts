@@ -91,7 +91,6 @@ export const uploadPDF = async (req: Request, res: Response) => {
       return
     }
 
-    // Summarize with Gemini
     if (!process.env.GEMINI_API_KEY) {
       throw new Error("Missing environment variable: GEMINI_API_KEY");
     }
@@ -104,7 +103,7 @@ export const uploadPDF = async (req: Request, res: Response) => {
           mimeType: "text/plain",
         },
       },
-"Summarize the content into clear, plain text notes without any special formatting like bold (**), lists, or Markdown syntax.",
+      "Summarize the content into clear, plain text notes without any special formatting like bold (**), lists, or Markdown syntax.",
     ]);
 
     const summary = result.response?.candidates?.[0]?.content?.parts?.[0]?.text;
@@ -117,7 +116,6 @@ export const uploadPDF = async (req: Request, res: Response) => {
     res.status(200).json({ notes: summary });
 
   } catch (error) {
-    console.error("PDF Summarization Error:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };

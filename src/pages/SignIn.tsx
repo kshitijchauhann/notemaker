@@ -48,7 +48,6 @@ const Login = () => {
 
     if (response.status === 200) {
       setSubmitted(true);
-      // Optionally redirect or store token here
       navigate("/notes");     }
   } catch (err) {
     console.error("Login error:", err);
