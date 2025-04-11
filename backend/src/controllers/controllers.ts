@@ -17,14 +17,20 @@ export const signUpPost = async(req: Request, res: Response) => {
 
   const { name, email, password } = req.body;
 
+  const existingUser = await findUser(email);
+
   if (!name || !email || !password) {
     res.status(400).json({ message: "All fields are required" });
     return;
   }
+  if (existingUser) {
+    res.status(409).json({ message: "User already exists" });
+    return;
+    }
+  
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
     await addUser(name, email, hashedPassword);
-    console.log(`Name: ${name}, Email: ${email}, Password: ${password}`);
     res.status(201).json({ message: "Signup Successful" });
 
   } catch (err) {

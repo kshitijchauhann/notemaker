@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios'; // Make sure this is imported
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -14,6 +15,7 @@ const SignUp = () => {
   const navigate = useNavigate();
 
   const [name, setName] = useState("");
+  const [email, setEmail] = useState(""); // new
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [submitted, setSubmitted] = useState(false);
@@ -54,6 +56,8 @@ const SignUp = () => {
   const validateForm = () => {
     const newErrors = {};
     if (!name.trim()) newErrors.name = "Name is required";
+    if (!email.trim()) newErrors.email = "Email is required";
+    else if (!/^\S+@\S+\.\S+$/.test(email)) newErrors.email = "Invalid email format";
     if (!password) newErrors.password = "Password is required";
     else if (password.length < 8) newErrors.password = "Password must be at least 8 characters";
     if (!confirmPassword) newErrors.confirmPassword = "Please confirm your password";
@@ -65,12 +69,19 @@ const SignUp = () => {
   const handleSubmit = async () => {
     if (!validateForm()) return;
 
-    // Simulated backend response
     try {
-      // Replace this with your real backend call
-      const response = { status: 200 }; 
+      const formData = {
+        name,
+        email,
+        password,
+      };
+      const response = await axios.post('http://localhost:3000/api/signup', formData, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
 
-      if (response.status === 200) {
+      if (response.status === 201) {
         setSubmitted(true);
         setTimeout(() => {
           navigate("/login");
@@ -102,87 +113,102 @@ const SignUp = () => {
         alignItems: 'center',
         width: '80%',
         padding: 2
-        }}>
+      }}>
 
-      <Card sx={{ maxWidth: 400, width: '100%' }}>
-        <CardContent>
-          <Typography variant="h5" gutterBottom>
-            Sign Up
-          </Typography>
+        <Card sx={{ maxWidth: 400, width: '100%' }}>
+          <CardContent>
+            <Typography variant="h5" gutterBottom>
+              Sign Up
+            </Typography>
 
-          <Box sx={{ mb: 2 }}>
-            <Typography>Name:</Typography>
-            <TextField
-              fullWidth
-              variant="outlined"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              error={!!errors.name}
-              helperText={errors.name || ""}
-              margin="dense"
-            />
-          </Box>
+            <Box sx={{ mb: 2 }}>
+              <Typography>Name:</Typography>
+              <TextField
+                fullWidth
+                variant="outlined"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                error={!!errors.name}
+                helperText={errors.name || ""}
+                margin="dense"
+              />
+            </Box>
 
-          <Box sx={{ mb: 2 }}>
-            <Typography>Password:</Typography>
-            <TextField
-              fullWidth
-              type="password"
-              variant="outlined"
-              value={password}
-              onChange={handlePasswordChange}
-              error={!!errors.password}
-              helperText={errors.password || ""}
-              margin="dense"
-              autoComplete="new-password"
-            />
-            {password && (
-              <>
-                <LinearProgress
-                  variant="determinate"
-                  value={passwordStrength}
-                  color={getStrengthColor(passwordStrength)}
-                  sx={{ mt: 1 }}
-                />
-                <Typography variant="caption">
-                  Password strength: {getStrengthLabel(passwordStrength)}
-                </Typography>
-              </>
+            <Box sx={{ mb: 2 }}>
+              <Typography>Email:</Typography>
+              <TextField
+                fullWidth
+                variant="outlined"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                error={!!errors.email}
+                helperText={errors.email || ""}
+                margin="dense"
+                autoComplete="email"
+              />
+            </Box>
+
+            <Box sx={{ mb: 2 }}>
+              <Typography>Password:</Typography>
+              <TextField
+                fullWidth
+                type="password"
+                variant="outlined"
+                value={password}
+                onChange={handlePasswordChange}
+                error={!!errors.password}
+                helperText={errors.password || ""}
+                margin="dense"
+                autoComplete="new-password"
+              />
+              {password && (
+                <>
+                  <LinearProgress
+                    variant="determinate"
+                    value={passwordStrength}
+                    color={getStrengthColor(passwordStrength)}
+                    sx={{ mt: 1 }}
+                  />
+                  <Typography variant="caption">
+                    Password strength: {getStrengthLabel(passwordStrength)}
+                  </Typography>
+                </>
+              )}
+            </Box>
+
+            <Box sx={{ mb: 2 }}>
+              <Typography>Confirm Password:</Typography>
+              <TextField
+                fullWidth
+                type="password"
+                variant="outlined"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                error={!!errors.confirmPassword}
+                helperText={errors.confirmPassword || ""}
+                margin="dense"
+                autoComplete="new-password"
+              />
+            </Box>
+
+            {submitted && (
+              <Alert severity="success" sx={{ mt: 2 }}>
+                Sign-up successful! Redirecting...
+              </Alert>
             )}
-          </Box>
+          </CardContent>
 
-          <Box sx={{ mb: 2 }}>
-            <Typography>Confirm Password:</Typography>
-            <TextField
+          <CardActions sx={{ padding: 2 }}>
+            <Button
+              variant="contained"
+              onClick={handleSubmit}
               fullWidth
-              type="password"
-              variant="outlined"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              error={!!errors.confirmPassword}
-              helperText={errors.confirmPassword || ""}
-              margin="dense"
-              autoComplete="new-password"
-            />
-          </Box>
-
-          {submitted && (
-            <Alert severity="success" sx={{ mt: 2 }}>
-              Sign-up successful! Redirecting...
-            </Alert>
-          )}
-        </CardContent>
-        <CardActions sx={{ padding: 2 }}>
-          <Button
-            variant="contained"
-            onClick={handleSubmit}
-            fullWidth
-            disabled={submitted}
-          >
-            Sign Up
-          </Button>
-        </CardActions>
-      </Card>
+              disabled={submitted}
+            >
+              Sign Up
+            </Button>
+          </CardActions>
+        </Card>
       </Box>
     </Box>
   );

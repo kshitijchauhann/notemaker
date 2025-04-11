@@ -7,12 +7,16 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Alert from '@mui/material/Alert';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState({});
+
+  const navigate = useNavigate();
 
   const validateForm = () => {
     const newErrors = {};
@@ -26,13 +30,32 @@ const Login = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = () => {
-    if (validateForm()) {
-      setSubmitted(true);
-      
-    }
-  };
+ const handleSubmit = async () => {
+  if (!validateForm()) return;
 
+  try {
+    const formData = {
+        email,
+        password
+      }
+   
+      const response = await axios.post('http://localhost:3000/api/login', formData, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+
+    if (response.status === 200) {
+      setSubmitted(true);
+      // Optionally redirect or store token here
+      navigate("/notes");     }
+  } catch (err) {
+    console.error("Login error:", err);
+    setErrors({ general: "Invalid email or password" });
+    setSubmitted(false);
+  }
+};
   return (
     <Box sx={{
       height: '100vh',

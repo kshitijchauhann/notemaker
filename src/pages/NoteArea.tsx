@@ -92,6 +92,7 @@ const NoteArea = () => {
   const [notes, setNotes] = useState<string[]>([]);
   const [showNotesScreen, setShowNotesScreen] = useState(false);
   const [fileName, setFileName] = useState('');
+
   const navigate = useNavigate();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -170,6 +171,22 @@ const NoteArea = () => {
     setFileName('');
     setLinkText('');
   };
+  
+  const handleLogout = async () => {
+    try {
+    // Call your logout endpoint (adjust URL as needed)
+     // await axios.post('http://localhost:3000/api/logout');
+
+    // Clear local data
+      localStorage.clear();
+
+    // Navigate to login (if using react-router)
+      navigate('/login');
+    } catch (error) {
+      console.error('Logout failed:', error);
+    // Optional: show error to user
+    }
+  };
 
   return (
     <Box
@@ -184,15 +201,14 @@ const NoteArea = () => {
     >
 
 <Box sx={{ position: 'absolute', top: 16, right: 16 }}>
-  <Tooltip title="Go to Profile">
-    <IconButton onClick={() => navigate('/profile')}>
-      <Avatar
-        alt="Profile"
-        src="/path/to/profile-pic.jpg" 
-        sx={{ width: 40, height: 40 }}
-      />
-    </IconButton>
-  </Tooltip>
+  <Button 
+    variant="outlined" 
+    color="error" 
+    size="small"
+    onClick={handleLogout}
+  >
+    Logout
+  </Button>
 </Box>
       {showNotesScreen ? (
         <NotesScreen
