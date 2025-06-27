@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Alert from '@mui/material/Alert';
 import LinearProgress from '@mui/material/LinearProgress';
+import Logo from "../logoipsum-custom-logo (2).svg";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -93,28 +94,30 @@ const SignUp = () => {
   };
 
   return (
-    <Box
-      sx={{
-        height: '100vh',
-        width: '100vw',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 2,
-        overflow: 'hidden',
-        position: 'fixed',
-        top: 0,
-        left: 0
-      }}
-    >
-      <Box sx={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: '80%',
-        padding: 2
-      }}>
-
+   
+ <Box sx={{
+  height: '100vh',
+  width: '100vw',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  padding: 2,
+  overflow: 'hidden',
+  position: 'fixed',
+  top: 0,
+  left: 0
+}}>
+  <Box sx={{ 
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '80%',
+    padding: 2
+  }}>
+    <Box sx={{ mb: 3 }}>
+      <img width="200px" src={Logo} alt="Logo"/>
+    </Box>
         <Card sx={{ maxWidth: 400, width: '100%' }}>
           <CardContent>
             <Typography variant="h5" gutterBottom>

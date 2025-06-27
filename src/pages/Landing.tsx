@@ -24,6 +24,9 @@ import {
   Summarize as SummarizeIcon,
   Close as CloseIcon
 } from '@mui/icons-material';
+
+import Logo from "../logoipsum-custom-logo (2).svg";
+
 import { useNavigate } from 'react-router-dom';
 
 const AINoteMakerLanding = () => {
@@ -48,8 +51,7 @@ const AINoteMakerLanding = () => {
       <AppBar position="static" color="default" elevation={0}>
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontWeight: 'bold', display: 'flex', alignItems: 'center' }}>
-            <AutoAwesomeIcon sx={{ mr: 1, color: '#6366F1' }} />
-            NoteGenius
+            <img width="200px" src={Logo}/>
           </Typography>
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <Button color="inherit" href="#features">Features</Button>
